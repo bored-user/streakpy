@@ -27,9 +27,10 @@ async def wait_loading(query, page=None):
 
 async def login(username, password):
     await (await wait_loading('a[data-test=have-account]')).click()
-    await (await page.querySelector("input[placeholder='Email or username']")).type(username)
-    await (await page.querySelector("input[placeholder='Password']")).type(password)
+    await (await page.querySelector("input[placeholder='Email or username']")).type(username, { 'delay': 200 })
+    await (await page.querySelector("input[placeholder='Password']")).type(password, { 'delay': 200 })
     await (await page.querySelector('button[type=submit]')).click()
+    print('Logged in!')
 
 
 async def start_lesson():
@@ -37,6 +38,7 @@ async def start_lesson():
     await (await wait_loading('button[data-test=start-button]')).click()
 
     await wait_loading('button[data-test=quit-button]')
+    print('Started lesson!\n')
 
 
 async def skip_exercise():
@@ -45,6 +47,7 @@ async def skip_exercise():
 
     if can_skip:
         await skip_btn.click()
+        print('Skipped speaking/ listening exercise!')
 
     return can_skip
 
@@ -60,8 +63,7 @@ async def translate(sentence, language):
     return translation
 
 
-async def get_sentence(): return (await page.querySelectorAllEval(
-    'span[data-test=hint-sentence] > *', "words => encodeURIComponent(words.map(word => word.innerHTML).join(''))"))
+async def get_sentence(): return (await page.querySelectorAllEval('span[data-test=hint-sentence] > *', "words => encodeURIComponent(words.map(word => word.innerHTML).join(''))"))
 
 
 async def solve_exercise():
@@ -71,8 +73,9 @@ async def solve_exercise():
         code = language['code'] if await page.querySelectorEval('h1[data-test=challenge-header] span', 'h => h.textContent') == 'Write this in Norwegian (Bokmål)' else 'en'
         sentence = await get_sentence()
 
-        await (await page.querySelector('textarea[data-test=challenge-translate-input]')).type((await translate(sentence, code)) if not sentence in language['exceptions'] else language['exceptions'][sentence])
+        await (await page.querySelector('textarea[data-test=challenge-translate-input]')).type((await translate(sentence, code)) if not sentence in language['exceptions'] else language['exceptions'][sentence], { 'delay': 200 })
         await next_exercise()
+        print('Solved writting exercise!')
     except:
         pass
 
@@ -82,8 +85,12 @@ async def check_mistake():
     if mistake == None:
         return
 
+    sentence = await get_sentence()
+    correct_form = await page.evaluate('m => m.children[1].children[0].children[0].children[1]', mistake)
+
     language['exceptions'] = {} if not 'exceptions' in language else language['exceptions']
-    language['exceptions'][await get_sentence()] = (await page.evaluate('m => m.children[1].children[0].children[0].children[1]', mistake))
+    language['exceptions'][sentence] = correct_form
+    print(f'Found an exception:\n    -> Input: {sentence}\n  -> Correct form: {correct_form}\nAlready added to exception list!')
 
 
 async def next_exercise():
@@ -94,6 +101,7 @@ async def next_exercise():
 
 
 async def main():
+    print('Starting...')
     global browser
     global page
 
@@ -116,11 +124,13 @@ async def main():
         if (((await page.querySelector('div[data-test=skill-tree]')) != None) and ((await page.querySelector('div[data-test=tree-section]')) != None) or (await page.querySelectorEval('button[data-test=quit-button]', "b => b.nextSibling.children[0].style.width == '100%'"))):
             os.remove('realtime.png')
             json.dump(language, open('languages/Norwegian.json', 'w'))
+            time.sleep(2)
             break
 
-        time.sleep(1)
+        time.sleep(2)
 
 
 if __name__ == '__main__':
     asyncio.get_event_loop().run_until_complete(main())
+    print('\nFinished! Bye!')
     exit()

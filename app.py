@@ -113,7 +113,7 @@ async def main():
         await check_mistake()
         await next_exercise()
 
-        if (((await page.querySelector('div[data-test=skill-tree]')) != None) and ((await page.querySelector('div[data-test=tree-section]')) != None) or (await page.querySelectorEval('button[data-test=quit-button]', "b => b.nextSibling.children[0].getAttribute('style').split('; ')[1].split(': ')[1].replace(';', '') == '100%'"))):
+        if (((await page.querySelector('div[data-test=skill-tree]')) != None) and ((await page.querySelector('div[data-test=tree-section]')) != None) or (await page.querySelectorEval('button[data-test=quit-button]', "b => b.nextSibling.children[0].style.width == '100%'"))):
             os.remove('realtime.png')
             json.dump(language, open('languages/Norwegian.json', 'w'))
             break

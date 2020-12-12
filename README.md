@@ -26,4 +26,5 @@ To avoid this, I created the `exceptions` object works kinda like this: When it 
 
 Originally, this was just a debugging thing. The script took a screenshot (aprox.) every time the page refreshed, so I could just sit there and watch as the page was refreshed and the screenshot was overwritten; kind of a video. But then, I noticed it's extremely useful, because it allows me to know what the script is doing (and it's very funny to just run the script and watch as the video progresses); so, I decided to let it there. Everytime the script finishes (every one round of exercises, techinically(*)), the `realtime.png` file is deleted.
 
-(*): I noticed that, sometimes, for some unknown-known reason, it just starts another round of exercises (and goes on, doing exercises, forever). Maybe I'll fix it sometime, maybe not
+(*): I noticed that, sometimes, for some unknown-known reason, it just starts another round of exercises (and goes on, doing exercises, forever). Maybe I'll fix it sometime, maybe not.<br>
+Edit: fixed.

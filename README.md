@@ -1,4 +1,4 @@
-# Streakpy
+# streakpy
 
 Python script to keep Duoling streaks going. It works by accessing [the website](//duoling.com) on a headless-browser and practice the first (easiest) lesson. Until today (day 1), it only works with the Norwegian course (the one I'm currently taking). Maybe someday I'll add Latin, German or even Russian - which are the courses I intend on taking next.
 

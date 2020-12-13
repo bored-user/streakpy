@@ -1,9 +1,1 @@
-{
-    "code": "no",
-    "url": "https://www.duolingo.com/skill/nb/Introduction/practice",
-    "name": "Norwegian",
-    "exceptions": {
-        "Hvem%3F%20Hva%3F%20Hvor%3F": "Who? What? Where?",
-        "It%20is%20there.": "Det er der."
-    }
-}
+{"code": "no", "url": "https://www.duolingo.com/skill/nb/Introduction/practice", "name": "Norwegian", "exceptions": {"Hvem%3F%20Hva%3F%20Hvor%3F": "Who? What? Where?", "It%20is%20there.": "Det er der."}}
